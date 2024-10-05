@@ -68,6 +68,9 @@ function blob_fixup() {
         vendor/lib64/libOPPORectify.so|vendor/lib64/libCOppLceTonemapAPI.so)
             ${PATCHELF_0_17_2} --replace-needed libstdc++.so libstdc++_vendor.so "${2}"
             ;;
+       odm/lib64/mediadrm/libwvdrmengine.so|odm/lib64/libwvhidl.so)
+           grep -q "libcrypto-v33.so" "${2}" || "${PATCHELF}" --replace-needed "libcrypto.so" "libcrypto-v33.so" "${2}"
+            ;;
     esac
 }
 
