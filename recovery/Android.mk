@@ -3,9 +3,9 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_C_INCLUDES := bootable/recovery \
-                    bootable/recovery/edify/include \
+                    bootable/deprecated-ota/edify/include \
                     bootable/recovery/otautil/include \
-                    bootable/recovery/updater/include
+                    bootable/deprecated-ota/updater/include
 ifneq ($(TARGET_PLATFORM_DEVICE_BASE),)
 LOCAL_CFLAGS += -DUSES_BOOTDEVICE_PATH
 endif
