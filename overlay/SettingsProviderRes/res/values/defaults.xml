@@ -30,7 +30,7 @@
     <integer name="def_screen_off_timeout">120000</integer>
 
     <!-- Default for Settings.Global.DEVICE_NAME $1=MODEL-->
-    <string name="def_device_name_simple">realme X2 Pro</string>
+    <string name="def_device_name_simple">Realme X2 Pro</string>
 
     <!-- Speed up animations -->
     <fraction name="def_window_animation_scale">60%</fraction>
