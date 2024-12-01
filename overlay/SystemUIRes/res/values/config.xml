@@ -53,4 +53,7 @@
 
     <!-- Whether long press is required to activate keyguard quick affordance buttons -->
     <bool name="config_keyguardQuickAffordanceRequiresLongPress">false</bool>
+
+    <!-- Charging info current divider, if needed -->
+    <integer name="config_currentInfoDivider" translatable="false">1</integer>
 </resources>
