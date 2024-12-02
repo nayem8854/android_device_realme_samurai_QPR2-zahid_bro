@@ -143,6 +143,7 @@
       "Name": "GPUMaxFreq",
       "Path": "/sys/class/kgsl/kgsl-3d0/devfreq/max_freq",
       "Values": [
+        "675000000",
         "585000000",
         "427000000"
       ],
@@ -153,6 +154,7 @@
       "Name": "GPUMinFreq",
       "Path": "/sys/class/kgsl/kgsl-3d0/devfreq/min_freq",
       "Values": [
+        "675000000",
         "585000000",
         "427000000",
         "345000000",
@@ -1025,7 +1027,7 @@
       "PowerHint": "EXPENSIVE_RENDERING",
       "Node": "GPUMaxFreq",
       "Duration": 0,
-      "Value": "585000000"
+      "Value": "675000000"
     },
     {
       "PowerHint": "FIXED_PERFORMANCE",
@@ -1055,13 +1057,13 @@
       "PowerHint": "FIXED_PERFORMANCE",
       "Node": "GPUMaxFreq",
       "Duration": 0,
-      "Value": "585000000"
+      "Value": "675000000"
     },
     {
       "PowerHint": "FIXED_PERFORMANCE",
       "Node": "GPUMinFreq",
       "Duration": 0,
-      "Value": "585000000"
+      "Value": "675000000"
     },
     {
       "PowerHint": "ML_ACC",
