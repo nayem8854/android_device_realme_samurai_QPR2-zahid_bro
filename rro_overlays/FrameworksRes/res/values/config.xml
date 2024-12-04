@@ -1161,4 +1161,7 @@
     manager will disable alpha trasformation in animations where not
     strictly needed. -->
     <bool name="config_sf_limitedAlpha">true</bool>
+
+    <!-- Disable Smart 5G -->
+    <bool name="config_supportSmart5G">false</bool>
 </resources>
