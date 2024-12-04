@@ -188,6 +188,7 @@ ro.soc.model=SM8150
 
 # USB
 sys.usb.mtp.batchcancel=1
+vendor.usb.product_string=Realme X2 Pro
 vendor.usb.diag.func.name=diag
 vendor.usb.dpl.inst.name=dpl
 vendor.usb.qdss.inst.name=qdss
