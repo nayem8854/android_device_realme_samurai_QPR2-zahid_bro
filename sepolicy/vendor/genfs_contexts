@@ -27,6 +27,10 @@ genfscon proc /touchpanel                                                  u:obj
 genfscon proc /sys/kernel/sched_upmigrate                                  u:object_r:proc_sched:s0
 genfscon proc /sys/kernel/sched_downmigrate                                u:object_r:proc_sched:s0
 
+# Extcon
+genfscon sysfs /devices/platform/vendor/vendor:extcon_usb1/extcon/extcon3/cable.0/     u:object_r:sysfs_extcon:s0
+genfscon sysfs /devices/platform/vendor/vendor:extcon_usb1/extcon/extcon3/cable.1/     u:object_r:sysfs_extcon:s0
+
 # Wakeup
 genfscon sysfs /devices/platform/soc/18800000.qcom,icnss/wakeup                                                                                                                      u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/platform/soc/c8c000.qcom,qup_uart/tty/ttyHS0/power/wakeup                                                                                                    u:object_r:sysfs_wakeup:s0
