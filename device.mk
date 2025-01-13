@@ -195,6 +195,7 @@ PRODUCT_PACKAGES += \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service \
     disable_configstore \
+    gralloc.qcom \
     hwcomposer.qcom \
     libdisplayconfig.qti \
     libqdMetaData \
