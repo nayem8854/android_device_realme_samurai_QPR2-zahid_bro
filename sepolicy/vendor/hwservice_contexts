@@ -9,3 +9,6 @@ vendor.oplus.hardware.orms::IOrmsHalProxy                                    u:o
 vendor.oplus.hardware.performance::IPerformance                              u:object_r:hal_fingerprint_hwservice:s0
 vendor.oplus.hardware.radio.oplusradio::IOplusRadio                          u:object_r:hal_telephony_hwservice:s0
 vendor.oplus.hardware.radio.oplusappradio::IOplusAppRadio                    u:object_r:hal_telephony_hwservice:s0
+
+# Dolby
+vendor.dolby.hardware.dms::IDms                                       u:object_r:hal_dms_hwservice:s0
