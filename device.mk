@@ -271,7 +271,8 @@ PRODUCT_COPY_FILES += \
 # HIDL
 PRODUCT_PACKAGES += \
     libhidltransport.vendor \
-    libhwbinder.vendor
+    libhwbinder.vendor \
+    libutils.vendor
 
 # IMS
 PRODUCT_PACKAGES += \
