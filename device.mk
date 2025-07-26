@@ -231,6 +231,8 @@ PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.3.vendor \
     libshims_fingerprint.samurai
 
+$(call soong_config_set,surfaceflinger,udfps_lib,//$(LOCAL_PATH):libudfps_extension.samurai)
+
 # fingerprint (IFAA)
 PRODUCT_PACKAGES += \
     IFAAService \
