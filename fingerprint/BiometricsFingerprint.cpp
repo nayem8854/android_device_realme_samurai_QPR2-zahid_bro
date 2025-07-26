@@ -114,7 +114,11 @@ Return<void> BiometricsFingerprint::onFingerUp() {
 
 Return<void> BiometricsFingerprint::onEnrollResult(uint64_t deviceId, uint32_t fingerId,
                                                    uint32_t groupId, uint32_t remaining) {
-    mClientCallback->onAcquired(deviceId, V2_1::FingerprintAcquiredInfo::ACQUIRED_VENDOR, 0);
+    if (!mClientCallback) {
+        ALOGW("Client callback not ready, dropping onEnrollResult");
+        return Void();
+    }
+    
     mOplusUdfpsHelper->touchUp();
     return mClientCallback->onEnrollResult(deviceId, fingerId, groupId, remaining);
 }
@@ -122,24 +126,43 @@ Return<void> BiometricsFingerprint::onEnrollResult(uint64_t deviceId, uint32_t f
 Return<void> BiometricsFingerprint::onAcquired(uint64_t deviceId,
                                                V2_1::FingerprintAcquiredInfo acquiredInfo,
                                                int32_t vendorCode) {
-    return mClientCallback->onAcquired(deviceId, acquiredInfo, vendorCode);
+    if (!mClientCallback) {
+        ALOGW("Client callback not ready, dropping onAcquired");
+        return Void();
+    }
+    
+    if (acquiredInfo != V2_1::FingerprintAcquiredInfo::ACQUIRED_VENDOR) {
+        return mClientCallback->onAcquired(deviceId, acquiredInfo, vendorCode);
+    }
+    
+    ALOGV("Filtering out ACQUIRED_VENDOR message to prevent framework issues");
+    return Void();
 }
 
 Return<void> BiometricsFingerprint::onAuthenticated(uint64_t deviceId, uint32_t fingerId,
                                                     uint32_t groupId,
                                                     const hidl_vec<uint8_t>& token) {
+    if (!mClientCallback) {
+        ALOGW("Client callback not ready, dropping onAuthenticated");
+        return Void();
+    }
+    
     if (fingerId != 0) {
         setDimlayerHbm(0);
     }
     setFpPress(0);
     ALOGD("onAuthenticated: Send FP Touch Up");
-    mClientCallback->onAcquired(deviceId, V2_1::FingerprintAcquiredInfo::ACQUIRED_VENDOR, 0);
     mOplusUdfpsHelper->touchUp();
     return mClientCallback->onAuthenticated(deviceId, fingerId, groupId, token);
 }
 
 Return<void> BiometricsFingerprint::onError(uint64_t deviceId, FingerprintError error,
                                             int32_t vendorCode) {
+    if (!mClientCallback) {
+        ALOGW("Client callback not ready, dropping onError");
+        return Void();
+    }
+    
     setFpPress(0);
     if (!this->isEnrolling) {
         setDimlayerHbm(0);
@@ -149,17 +172,32 @@ Return<void> BiometricsFingerprint::onError(uint64_t deviceId, FingerprintError 
 
 Return<void> BiometricsFingerprint::onRemoved(uint64_t deviceId, uint32_t fingerId,
                                               uint32_t groupId, uint32_t remaining) {
+    if (!mClientCallback) {
+        ALOGW("Client callback not ready, dropping onRemoved");
+        return Void();
+    }
+    
     return mClientCallback->onRemoved(deviceId, fingerId, groupId, remaining);
 }
 
 Return<void> BiometricsFingerprint::onEnumerate(uint64_t deviceId, uint32_t fingerId,
                                                 uint32_t groupId, uint32_t remaining) {
+    if (!mClientCallback) {
+        ALOGW("Client callback not ready, dropping onEnumerate");
+        return Void();
+    }
+    
     return mClientCallback->onEnumerate(deviceId, fingerId, groupId, remaining);
 }
 
 Return<void> BiometricsFingerprint::onAcquired_2_2(uint64_t deviceId,
                                                    FingerprintAcquiredInfo acquiredInfo,
                                                    int32_t vendorCode) {
+    if (!mClientCallback) {
+        ALOGW("Client callback not ready, dropping onAcquired_2_2");
+        return Void();
+    }
+    
     return reinterpret_cast<V2_2::IBiometricsFingerprintClientCallback*>(mClientCallback.get())
             ->onAcquired_2_2(deviceId, acquiredInfo, vendorCode);
 }
@@ -171,24 +209,21 @@ Return<void> BiometricsFingerprint::onEngineeringInfoUpdated(
 }
 
 Return<void> BiometricsFingerprint::onFingerprintCmd(int32_t cmdId,
-                                                     const hidl_vec<int8_t>& result,
-                                                     uint32_t resultLen) {
-    uint64_t deviceId = -1;
-    std::copy(result.data(), result.data() + resultLen, &deviceId);
+                                                     const hidl_vec<int8_t>& /*result*/,
+                                                     uint32_t /*resultLen*/) {
+    if (!mClientCallback) {
+        ALOGW("Client callback not ready, dropping onFingerprintCmd");
+        return Void();
+    }
+
     switch (cmdId) {
         case FINGERPRINT_CALLBACK_CMD_ID_ON_TOUCH_DOWN:
             ALOGD("onFingerprintCmd: FP Touch Down Detected!");
             mOplusUdfpsHelper->touchDown();
-            if (deviceId != -1) {
-                mClientCallback->onAcquired(deviceId, V2_1::FingerprintAcquiredInfo::ACQUIRED_VENDOR, 1);
-            }
             break;
         case FINGERPRINT_CALLBACK_CMD_ID_ON_TOUCH_UP:
             ALOGD("onFingerprintCmd: FP Touch Up Detected!");
             mOplusUdfpsHelper->touchUp();
-            if (deviceId != -1) {
-                mClientCallback->onAcquired(deviceId, V2_1::FingerprintAcquiredInfo::ACQUIRED_VENDOR, 0);
-            }
             break;
     }
     return Void();
