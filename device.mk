@@ -37,6 +37,7 @@ PRODUCT_PACKAGES += \
     DialerRes \
     FrameworksRes \
     LineageSDKOverlay \
+    NcmTetheringOverlay \
     SettingsProviderRes \
     SettingsRes \
     SimpleDeviceConfigCommon \
