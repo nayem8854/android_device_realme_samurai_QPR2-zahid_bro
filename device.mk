@@ -304,6 +304,8 @@ PRODUCT_PACKAGES += \
     tune2fs_ramdisk \
     resize2fs_ramdisk
 
+$(call soong_config_set,libinit,vendor_init_lib,//$(LOCAL_PATH):libinit_samurai)
+
 # IPA Manager
 PRODUCT_PACKAGES += \
     ipacm \
