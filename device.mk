@@ -383,6 +383,12 @@ PRODUCT_PACKAGES += \
     libvorbisidec.vendor \
     libvpx.vendor
 
+# Partitions
+PRODUCT_PACKAGES += \
+    vendor_bt_firmware_mountpoint \
+    vendor_dsp_mountpoint \
+    vendor_firmware_mnt_mountpoint
+
 # Parts
 $(call inherit-product, packages/apps/RealmeParts/parts.mk)
 
