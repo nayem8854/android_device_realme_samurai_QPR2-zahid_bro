@@ -133,3 +133,8 @@ persist.vendor.delta_time.enable=true
 
 # WiFi
 config.disable_rtt=true
+
+# Zram
+ro.zram.first_wb_delay_mins=1440
+ro.zram.mark_idle_delay_mins=60
+ro.zram.periodic_wb_delay_hours=24
