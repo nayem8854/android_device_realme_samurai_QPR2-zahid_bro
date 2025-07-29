@@ -500,9 +500,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     vendor.lineage.touch@1.0-service.samurai
 
-# UFFD GC
- OVERRIDE_ENABLE_UFFD_GC := false
-
 # Update
 AB_OTA_UPDATER := false
 
