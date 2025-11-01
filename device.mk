@@ -183,6 +183,10 @@ PRODUCT_COPY_FILES += \
 # DebugFS
 PRODUCT_SET_DEBUGFS_RESTRICTIONS := true
 
+# DeviceAsWebcam
+PRODUCT_PACKAGES += \
+		DeviceAsWebcam
+
 # Display
 PRODUCT_PACKAGES += \
     android.hardware.graphics.composer@2.4-service \
