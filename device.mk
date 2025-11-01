@@ -345,7 +345,7 @@ PRODUCT_COPY_FILES += \
 
 # Livedisplay
 PRODUCT_PACKAGES += \
-    vendor.lineage.livedisplay@2.0-service-sdm
+    vendor.lineage.livedisplay-service.sdm
 
 # Native libraries whitelist
 PRODUCT_COPY_FILES += \
