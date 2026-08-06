@@ -6,6 +6,9 @@
 
 BOARD_VENDOR := realme
 
+# samurai is an A-only device. Android 16 defaults this to true when unset.
+AB_OTA_UPDATER := false
+
 BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 BUILD_BROKEN_USES_BUILD_COPY_HEADERS := true
