@@ -7,7 +7,17 @@
 
 ## Current role
 
-Active Android 16 QPR2 device-tree integration target. Functional device source has not been changed by the control-framework task; only `REPORT.md` and `AGENTS_FILES/*` were added/updated.
+Active Android 16 QPR2 device-tree integration target. Functional device source has not been changed by the control-framework task; only control documentation has been added/updated.
+
+## Mandatory alignment policy
+
+Before functional QPR2 work, read `AGENTS_FILES/ALIGNMENT_POLICY.md`.
+
+`USER-PROVIDED EXPLICIT AUTHORIZATION`: normal evidence-backed DT/VT/RealmeParts alignment changes, and only smallest proven boot-safe kernel interface adjustments, may be performed without another per-change normal-write permission.
+
+Hard boundary: major/high-blast-radius kernel changes that could plausibly cause boot failure are **not** automatically authorized. If the current kernel contract is valid, adapt DT/VT/RealmeParts first. A non-trivial boot-risk kernel change requires separate explicit approval.
+
+RealmeParts existing verified mechanisms are a non-regression contract and must be preserved/adapted rather than broken by DT/VT/kernel alignment.
 
 ## A-only architecture
 
@@ -33,22 +43,25 @@ Other user-supplied repositories/resources under `/home/zahid/REALME_X2_PRO_SAMU
 
 `USER-PROVIDED VERIFIED RESULT`: the designated F.14 OTA contains multiple display calibration/firmware materials, including aftermarket/replacement-display related variants, and these are involved with optical FOD behavior.
 
-Device audit must therefore trace:
-
-- panel/display identification;
-- properties/init triggers selecting calibration/firmware;
-- HBM/dimlayer/brightness/display-state handling;
-- UDFPS/FOD state;
-- touch/AOD/refresh behavior;
-- RealmeParts panel capability gating;
-- vendor loader/firmware dependencies;
-- kernel panel/FOD interfaces.
+Device audit must therefore trace panel/display identification, calibration/firmware-selection triggers, HBM/dimlayer/brightness/display-state handling, UDFPS/FOD state, touch/AOD/refresh behavior, RealmeParts panel capability gating, vendor loader dependencies, and kernel panel/FOD interfaces.
 
 Do not assume a single panel variant and do not patch Goodix/kernel first when a FOD defect may originate from wrong panel/calibration selection.
 
+## SuperVOOC charging display requirement
+
+`USER-PROVIDED EXPLICIT REQUIREMENT`: genuine supported SuperVOOC/VOOC charging must be shown in the Android UI in a stock-Realme-like manner.
+
+Device work must trace the real charger/health/vendor signal, its init/property/service ownership, and the correct ROM UI consumer. Do not fake `SuperVOOC` branding. The state must fall back correctly for disconnect and non-SuperVOOC charging. Preserve SmartCharging/cool-down/charge-limit ownership and ensure charging UI does not disturb display/FOD/HBM state.
+
+If the kernel already exposes the required charging state, adapt device/vendor/framework consumers instead of changing kernel charging core merely for UI branding.
+
+## RealmeParts feature policy
+
+Existing verified RealmeParts mechanisms must not regress. After baseline alignment is stable, useful modern features may be added only when Samurai capability, real interface, permissions/SELinux, owner, accepted values, restore order, and Android 16 compatibility are proven. Unsupported/speculative controls stay hidden or deferred.
+
 ## Next task
 
-Run Phase 0/A/K0 inventory, then Device Phase D from `AGENTS_FILES/ROAD_MAP.md`. Record all cross-tree dependencies instead of compensating locally.
+Run Phase 0/A/K0 inventory, then Device Phase D. Record all cross-tree dependencies instead of compensating locally.
 
 ## Validation
 
