@@ -1,0 +1,1 @@
+# Stock Realme Camera Pre-Environment\n\nThis directory is reserved for future stock camera porting (OppoCamera/RealmeCamera). The porting will be performed during Phase 8 after successful boot and basic feature validation.

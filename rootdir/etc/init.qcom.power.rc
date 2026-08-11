@@ -1,25 +1,55 @@
-# Balanced
+# RealmeParts Persistent Performance Profiles.
+# The kernel exposes only schedutil up_rate_limit_us and down_rate_limit_us.
+# Power HAL must not write these persistent profile nodes..
+#----------------------------------------------------------------#
+#####   BALANCE-MODE ON  #####
+#---------------------------------------------------------------#
 on property:perf_profile=0
-    write /sys/class/kgsl/kgsl-3d0/throttling 1
-
+#----------------------------------------------------------->>>
+    # SCHEDULER MIGRATION THRESHOLDS: CONSERVATIVE CLUSTER PROMOTION/DEMOTION.
     write /proc/sys/kernel/sched_upmigrate "95 95"
     write /proc/sys/kernel/sched_downmigrate "85 85"
 
-    # skin-therm
-    write /sys/class/thermal/thermal_zone73/cdev0_upper_limit 12
-    write /sys/class/thermal/thermal_zone73/cdev1_upper_limit 15
-
+    # NEUTRAL SCHEDUTIL PROFILE.
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 2000
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 2000
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/up_rate_limit_us 2000
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/down_rate_limit_us 2000
+    write /sys/devices/system/cpu/cpu7/cpufreq/schedutil/up_rate_limit_us 2000
+    write /sys/devices/system/cpu/cpu7/cpufreq/schedutil/down_rate_limit_us 2000
+    
+    # DISPLAY COMPOSITION POLICY.
     setprop vendor.display.enable_rotator_ui 0
 
-# Gaming
+    # FOREGROUND SCHEDULING POLICY.
+    write /dev/stune/foreground/schedtune.boost 0
+    write /dev/stune/foreground/schedtune.prefer_idle 1
+    write /dev/stune/top-app/schedtune.prefer_idle 1
+    write /dev/cpuset/foreground/cpus 0-2,4-6
+
+#------------------------------------------------------------#
+#####   GAME-MODE ON   #####
+#-----------------------------------------------------------#
 on property:perf_profile=1
-    write /sys/class/kgsl/kgsl-3d0/throttling 0
+#-------------------------------------------------------->>>
+    # EARLIER PROMOTION AND LONGER RESIDENCY ON PERFORMANCE CLUSTERS.
+    write /proc/sys/kernel/sched_upmigrate "96 90"
+    write /proc/sys/kernel/sched_downmigrate "75 80"
 
-    write /proc/sys/kernel/sched_upmigrate "96 88"
-    write /proc/sys/kernel/sched_downmigrate "55 66"
-
-    # skin-therm
-    write /sys/class/thermal/thermal_zone73/cdev0_upper_limit 00
-    write /sys/class/thermal/thermal_zone73/cdev1_upper_limit 00
-
+    # AGGRESSIVE BUT BOUNDED SCHEDUTIL PROFILE.
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 500
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 20000
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/up_rate_limit_us 500
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/down_rate_limit_us 15000
+    write /sys/devices/system/cpu/cpu7/cpufreq/schedutil/up_rate_limit_us 500
+    write /sys/devices/system/cpu/cpu7/cpufreq/schedutil/down_rate_limit_us 10000
+    
+    # DISPLAY COMPOSITION POLICY.
     setprop vendor.display.enable_rotator_ui 1
+
+    # FOREGROUND SCHEDULING POLICY. POWER HAL RETAINS OWNERSHIP OF TEMPORARY
+    # TOP-APP BOOSTS USED BY INTERACTION AND LAUNCH HINTS.
+    write /dev/stune/foreground/schedtune.boost 30
+    write /dev/stune/foreground/schedtune.prefer_idle 0
+    write /dev/stune/top-app/schedtune.prefer_idle 0
+    write /dev/cpuset/foreground/cpus 0-2,4-7

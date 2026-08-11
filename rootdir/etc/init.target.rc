@@ -61,18 +61,18 @@ on init
 
     # configure governor settings for little cluster
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor schedutil
-    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 500
-    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 20000
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 2000
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 2000
 
     # configure governor settings for big cluster
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor schedutil
-    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/up_rate_limit_us 500
-    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/down_rate_limit_us 20000
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/up_rate_limit_us 2000
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/down_rate_limit_us 2000
 
     # configure governor settings for big big CPU
     write /sys/devices/system/cpu/cpu7/cpufreq/scaling_governor schedutil
-    write /sys/devices/system/cpu/cpu7/cpufreq/schedutil/up_rate_limit_us 500
-    write /sys/devices/system/cpu/cpu7/cpufreq/schedutil/down_rate_limit_us 20000
+    write /sys/devices/system/cpu/cpu7/cpufreq/schedutil/up_rate_limit_us 2000
+    write /sys/devices/system/cpu/cpu7/cpufreq/schedutil/down_rate_limit_us 2000
 
    # Set value 1 for sched_walt_rotate_big_tasks
     write /proc/sys/kernel/sched_walt_rotate_big_tasks 1
@@ -100,9 +100,6 @@ on init
     wait /dev/block/platform/soc/1d84000.ufshc
     symlink /dev/block/platform/soc/1d84000.ufshc /dev/block/bootdevice
 
-on early-fs
-    start vold
-
 on fs
     mount_all /vendor/etc/fstab.qcom --early
     chown root system /mnt/vendor/persist
@@ -114,14 +111,8 @@ on fs
     write /sys/kernel/boot_adsp/boot 1
 
 on late-fs
-    # Start services for bootanim
-    start servicemanager
-    start surfaceflinger
-    start bootanim
-    start vendor.hwcomposer-2-4
-    start vendor.configstore-hal
-
-    # mount RW partitions which need run fsck
+    # Core services and HAL classes are started by Android core init.
+    # Keep this device action limited to late vendor mounts.
     mount_all /vendor/etc/fstab.qcom --late
 
 on early-boot
