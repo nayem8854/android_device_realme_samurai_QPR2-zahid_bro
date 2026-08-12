@@ -64,7 +64,7 @@ on boot
 
     # OTG
     chown system system /sys/class/power_supply/usb/otg_switch
-    chmod 06666 /sys/class/power_supply/usb/otg_switch
+    chmod 0666 /sys/class/power_supply/usb/otg_switch
 
     # wakeup reason
     chown system system /sys/kernel/wakeup_reasons/wakeup_stastisc_reset
