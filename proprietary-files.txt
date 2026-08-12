@@ -1486,15 +1486,3 @@ vendor/lib64/vendor.qti.hardware.wifi.keystore@1.0.so
 vendor/lib64/vendor.qti.hardware.wifi.wifilearner@1.0.so
 vendor/lib64/vendor.qti.hardware.wigig.netperftuner@1.0.so
 vendor/lib64/vendor.qti.hardware.wigig.supptunnel@1.0.so
-
-# Aftermarket Panel and Fingerprint Calibration
-vendor/etc/qdcm_calib_data_boe_nt37800_amoled_fhd+_panel_with_DSC.xml
-vendor/etc/qdcm_calib_data_boe_nt36672c_fhd_ltps_tft_lcd_panel_with_DSC.xml
-vendor/etc/qdcm_calib_data_jdi_nt36672c_fhd_ltps_tft_lcd_panel_with_DSC.xml
-vendor/etc/ltm_config_samsung_amb655uv01_amoled_fhd+_panel_with_DSC.xml
-vendor/etc/OPPO_OLED_19081_AD_calib.cfg
-odm/lib64/hw/fingerprint.goodix_G2.default.so
-odm/lib64/hw/fingerprint.goodix_G5.default.so
-odm/lib64/hw/fingerprint.goodix_G6.default.so
-odm/lib64/hw/fingerprint.silead.default.so
-odm/lib64/hw/fingerprint.silead_16bit.default.so
