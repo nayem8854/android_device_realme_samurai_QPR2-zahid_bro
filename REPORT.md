@@ -70,3 +70,18 @@ Control documentation: `SOURCE-VALIDATED` after fetch-back verification. No func
 ## Rollback
 
 Revert only the control-document commits to return to pre-framework source state. Functional device source baseline remains the pre-framework HEAD above.
+
+## Task: Revert Aftermarket AMOLED Support
+
+**Current branch:** `infinity-x-3.12-qpr2-staging`
+**Pre-change HEAD:** `f4da1a457e24c149c14c7a2f21b08840b7deccec` (approx, the commit before reverts)
+**Candidate/reference:** N/A (Reversion)
+**Source SHA(s):** N/A
+**Exact files:**
+- `proprietary-files.txt`
+**Classification:** `REVERT`
+**Expected consumer:** Device tree blobs mapping
+**Cross-tree implications:** Matched by reverts in Vendor Tree (blob deletions) due to missing kernel source for Silead fingerprint and BOE/JDI displays (a blocker under the Boot-Safety rule).
+**Rollback:** Git revert/reset if needed.
+**Post-change HEAD:** `fb0b184`
+**Validation result:** `SOURCE-VALIDATED`
