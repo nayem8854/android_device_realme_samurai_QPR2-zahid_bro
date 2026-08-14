@@ -263,15 +263,12 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/gps.conf:$(TARGET_COPY_OUT_ODM)/etc/gps.conf
 
 # Health
-# Proprietary android.hardware.health@2.1-service.samurai is started from init;
+# AIDL health is the sole runtime service; HIDL remains available for recovery.
 PRODUCT_PACKAGES += \
     android.hardware.health@2.1-impl:64 \
     android.hardware.health@2.1-impl.recovery \
     android.hardware.health@2.1-service \
     android.hardware.health-service.samurai
-
-# Lineage Health — sole charge-limit owner (mmi_charging_enable).
-$(call soong_config_set,lineage_health,charging_control_charging_path,/sys/class/power_supply/battery/mmi_charging_enable)
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/org.lineageos.health.excluded.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/org.lineageos.health.excluded.xml
