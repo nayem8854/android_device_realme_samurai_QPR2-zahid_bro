@@ -78,10 +78,62 @@ Revert only the control-document commits to return to pre-framework source state
 **Candidate/reference:** N/A (Reversion)
 **Source SHA(s):** N/A
 **Exact files:**
+
 - `proprietary-files.txt`
+
 **Classification:** `REVERT`
 **Expected consumer:** Device tree blobs mapping
 **Cross-tree implications:** Matched by reverts in Vendor Tree (blob deletions) due to missing kernel source for Silead fingerprint and BOE/JDI displays (a blocker under the Boot-Safety rule).
 **Rollback:** Git revert/reset if needed.
 **Post-change HEAD:** `fb0b184`
 **Validation result:** `SOURCE-VALIDATED`
+
+## Priority-0A Discovery (Aftermarket / Panel Gating)
+
+**Status:** Completed
+**Findings:**
+
+- Panel Capability Matrix produced in artifact.
+- Aftermarket panel blob dependencies (BOE, Silead, Goodix G2/G5/G6) successfully reverted from `proprietary-files.txt` and Vendor Tree.
+- RealmeParts relies on `Utils.fileWritable()` instead of checking panel serial IDs for HBM and DC Dimming.
+
+## Priority-0B: Battery Health / Cycle Count Correction
+
+**Status:** Completed
+**Validation result:** `SOURCE-VALIDATED`
+**Findings & Fixes:**
+
+- Natively, Android Health HAL reads `charge_full` and `charge_full_design` which the Samurai kernel populates via `qg_get_learned_capacity()` and `qg_get_nominal_capacity()`. This results in the correct battery health percentage directly out of the box (`3148000 / 4000000 = 78.7%`).
+- However, the `cycle_count` property exposes the total dual-cell cycle count.
+- **Fix applied:** I have restored the proprietary `android.hardware.health-service.samurai` in `2_android_device_realme_samurai_QPR2/health` and wired it into `device.mk`. It properly intercepts the generic `batteryCycleCount` and applies the `batt_cc / 2` division fix required for the dual-cell battery.
+
+## Priority-0C: SuperVOOC Detection / UI
+
+**Status:** Completed
+**Validation result:** `SOURCE-VALIDATED`
+**Findings & Fixes:**
+
+- The kernel correctly exposes SuperVOOC status to the userspace via `/sys/class/power_supply/battery/voocchg_ing`.
+- **Fix applied:** I updated `2_android_device_realme_samurai_QPR2/rro_overlays/FrameworksRes/res/values/config.xml` to set `config_hasVoocCharger = true`, and added `config_oemFastChargerStatusName` ("SuperVOOC Charging") alongside the existing `config_oemFastChargerStatusPath`. This ensures that SystemUI natively intercepts the fast-charging string and correctly displays the genuine SuperVOOC branding on the lockscreen when charging.
+
+## Phase 0: Freeze Current State
+
+**Status:** Completed
+**Validation result:** `SOURCE-VALIDATED`
+**Findings:**
+
+- **DT:** `infinity-x-3.12-qpr2-staging` @ `0d6e702d27295a2ebfd4e23bd3df05b7aad6302d`
+- **VT:** `infinity-x-3.12-qpr2` @ `a906f46f31682bfd3ba3b1aaecf5aed8997e9f91`
+- **RealmeParts:** `lineage-23.2-qpr2` @ `08ccfe312a799c9e6ab184b43ca103b749324e64`
+- **Kernel:** `lineage-23.2-qpr2` @ `1ccd697b18ca465872e2c8095ab62e5949b3bc08`
+- Created XML local manifests for Infinity-X 3.12, crDroid 12.11, and Lineage 23.2 in the `REALME_X2_PRO_SAMURAI_ALL_TREES` root.
+
+## Phase 1-4: Android 16 QPR2 Scheduler Hardening & Power HAL Conflict Resolution
+
+**Status:** Completed
+**Validation result:** `SOURCE-VALIDATED`
+**Findings & Fixes:**
+
+- **Scheduler Profiles:** Added missing `cgroups_30.json` and `task_profiles_30.json` (Android 16 QPR2 scheduler hardening) to `device.mk`.
+- **Power HAL Conflict:** `init.qcom.power.rc` was aggressively manipulating `stune` (schedtune) and `cpuset` configurations to force Game Mode. This overrode the Power HAL and ActivityManager, breaking dynamic framework hints (like `TASchedtuneBoost` and `DoubleTapToWakeEnable`).
+- **Fix applied:** Stripped all `/dev/stune` and `/dev/cpuset` writes from `init.qcom.power.rc`. The file now *only* writes to the kernel's `up_rate_limit_us` and `down_rate_limit_us` nodes, and `sched_upmigrate` / `sched_downmigrate`. This satisfies RealmeParts `perf_profile` toggles while cleanly isolating it from the Power HAL.
