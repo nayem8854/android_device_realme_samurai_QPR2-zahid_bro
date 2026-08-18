@@ -10,7 +10,7 @@ cc_binary {
     shared_libs: [
         "libbase",
         "libbinder_ndk",
-        "android.hardware.health-V3-ndk",
+        "android.hardware.health-V4-ndk",
     ],
     static_libs: [
         "libhealth_aidl_impl",
