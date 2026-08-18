@@ -23,6 +23,9 @@
 /(odm|vendor/odm)/bin/hw/vendor\.oplus\.hardware\.biometrics\.fingerprintpay@1\.0-service               u:object_r:hal_fingerprint_default_exec:s0
 /dev/goodix_fp                                                                                          u:object_r:fingerprint_device:s0
 
+# Sensors
+/vendor/bin/hw/android\.hardware\.sensors@2\.1-service\.samurai                                         u:object_r:hal_sensors_default_exec:s0
+
 # Health
 /vendor/bin/hw/android\.hardware\.health@2\.1-service\.samurai                                          u:object_r:hal_health_default_exec:s0
 
