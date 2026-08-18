@@ -6,6 +6,7 @@
 
 #include "AreaCapture.h"
 
+#include <gui/AidlUtil.h>
 #include <gui/SurfaceComposerClient.h>
 #include <gui/SyncScreenCaptureListener.h>
 #include <ui/DisplayState.h>
@@ -20,6 +21,8 @@ using android::sp;
 using android::SurfaceComposerClient;
 using android::SyncScreenCaptureListener;
 using android::gui::ScreenCaptureResults;
+using android::gui::SecureLayerMode;
+using android::gui::aidl_utils::toARect;
 using android::ui::PixelFormat;
 
 namespace aidl {
@@ -54,13 +57,10 @@ ndk::ScopedAStatus AreaCapture::getAreaBrightness(AreaRgbCaptureResult* _aidl_re
     DisplayCaptureArgs displayCaptureArgs;
     displayCaptureArgs.displayToken = getInternalDisplayToken();
    displayCaptureArgs.captureArgs.pixelFormat = ::android::PIXEL_FORMAT_RGBA_8888;
-    displayCaptureArgs.captureArgs.sourceCrop.left = m_screenshot_rect.left;
-    displayCaptureArgs.captureArgs.sourceCrop.top = m_screenshot_rect.top;
-    displayCaptureArgs.captureArgs.sourceCrop.right = m_screenshot_rect.right;
-    displayCaptureArgs.captureArgs.sourceCrop.bottom = m_screenshot_rect.bottom;
+    displayCaptureArgs.captureArgs.sourceCrop = toARect(m_screenshot_rect);
     displayCaptureArgs.width = m_screenshot_rect.getWidth();
     displayCaptureArgs.height = m_screenshot_rect.getHeight();
-    displayCaptureArgs.captureArgs.secureLayerMode = ::android::gui::SecureLayerMode::Capture;
+    displayCaptureArgs.captureArgs.secureLayerMode = SecureLayerMode::Capture;
 
     sp<SyncScreenCaptureListener> captureListener = new SyncScreenCaptureListener();
     if (ScreenshotClient::captureDisplay(displayCaptureArgs, captureListener) !=
