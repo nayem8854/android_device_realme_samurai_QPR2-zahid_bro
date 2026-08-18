@@ -1,11 +1,12 @@
 #include <health-impl/Health.h>
-#include <health-impl/HealthLoop.h>
+#include <health-impl/HalHealthLoop.h>
+#include <health/utils.h>
 #include <android-base/logging.h>
 #include <utils/String8.h>
 
 using aidl::android::hardware::health::HealthInfo;
 using aidl::android::hardware::health::HalHealthLoop;
-using aidl::android::hardware::health::impl::Health;
+using aidl::android::hardware::health::Health;
 
 class SamuraiHealth : public Health {
   public:
@@ -22,8 +23,8 @@ class SamuraiHealth : public Health {
 
         // Fix for dual-cell equivalent capacity and health percentage (4000mAh baseline)
         // Kernel charge_full / batt_fcc is correctly scaled in uAh (e.g. 3148000 for degraded battery)
-        if (health_info->batteryFullChargeCapacityUah > 0) {
-            int state_of_health = (health_info->batteryFullChargeCapacityUah / 40000);
+        if (health_info->batteryFullChargeUah > 0) {
+            int state_of_health = (health_info->batteryFullChargeUah / 40000);
             if (state_of_health > 100) state_of_health = 100;
             if (state_of_health < 0) state_of_health = 0;
             
