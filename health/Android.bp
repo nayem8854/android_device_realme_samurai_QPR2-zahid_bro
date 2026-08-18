@@ -11,9 +11,14 @@ cc_binary {
         "libbase",
         "libbinder_ndk",
         "android.hardware.health-V4-ndk",
+        "libcutils",
+        "liblog",
+        "libutils",
     ],
     static_libs: [
         "libhealth_aidl_impl",
+        "libhealthloop",
+        "libbatterymonitor",
     ],
     overrides: [
         "android.hardware.health-service.example",
